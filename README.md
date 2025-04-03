@@ -1,0 +1,60 @@
+# SMS Backup Restore parser API 
+---
+
+This API parses the XML output from the [SMS Backup & Restore Android app](https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore)
+
+
+## Usage
+
+---
+
+This tool assumes the default file naming convention of the SMS Backup & Restore Android app, e.g.,
+
+```markdown
+
+sms-20180101000000.xml
+```
+
+
+### Use Service Account (For Server-Side Access)
+
+A service account allows you to access Google Drive programmatically without user interaction. This is useful for backend scripts or automation
+
+
+#### Step 1: Create a Service Account
+1. Go to Google Cloud Console.
+2. Select your project or create a new one.
+3. Navigate to **APIs & Services > Credentials**.
+4. Click **Create Credentials > Service Account**.
+5. Give it a name and description, then click **Create**.
+6. Under "Grant this service account access to project", assign the **Editor** or **Owner** role (for full access) or **Drive API Admin**.
+7. Click **Create & Continue** until done.
+
+#### Step 2: Generate and Download the JSON Key
+1. Go to **APIs & Services > Credentials**.
+2. Click on your service account.
+3. Under **Keys**, click **Add Key > JSON**.
+4. Download the JSON file securely.
+5. Rename the downloaded file to `service_account.json` and add to  `credentials/service_account.json` 
+
+#### Step 3: Enable Google Drive API
+1. Go to **APIs & Services > Library**.
+2. Search for **Google Drive API** and enable it.
+
+
+#### Step 4: Share Google Drive Folder with Service Account
+1. Create a folder on Google Drive.
+2. Share the folder with the **Service Account email** (you can find this email in the service account details).
+3. Ensure the service account has the necessary permissions (Viewer, Editor, or higher).
+
+
+#### Step 5: Move SMS Backup File to Google Drive Folder
+1. Use [SMS Backup & Restore Android app](https://play.google.com/store/apps/details?id=com.riteshsahu.SMSBackupRestore) to backup theh file will be saved on GDrive.
+2. Open **Google Drive** and navigate to the folder you shared with the service account.
+3. Drag and drop the SMS backup file into the shared folder.
+4. The file will now be stored in the Google Drive folder and accessible by the service account.
+
+
+#### UseCase
+
+You can create automations with the parsed data using [Make](make.com) (formerly Integromat).

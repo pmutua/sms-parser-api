@@ -55,6 +55,20 @@ A service account allows you to access Google Drive programmatically without use
 4. The file will now be stored in the Google Drive folder and accessible by the service account.
 
 
+
+#### Endpoint
+
+
+##### Example using **curl**
+
+You can use `curl` to make the request from the terminal:
+
+```bash
+curl -X GET "http://localhost:8000/api/sms/latest/?provider=google"
+
+```
+
+
 #### UseCase
 
 You can create automations with the parsed data using [Make](make.com) (formerly Integromat).

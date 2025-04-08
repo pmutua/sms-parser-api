@@ -27,7 +27,7 @@ class GoogleDriveClient:
 
         try:
             service = build("drive", "v3", credentials=credentials)
-            logger.info(f"Service created successfully.")
+            logger.info("Service created successfully.")
             return service
         except HttpError as error:
             logger.error(f"Google Drive API error: {error}")
@@ -35,6 +35,31 @@ class GoogleDriveClient:
 
     def _get_credentials(self):
         """Retrieves stored credentials or generates new ones."""
+        # Check if we're in production environment
+        if os.environ.get('ENVIRONMENT') == 'PROD':
+            logger.info("Using production credentials from environment variable")
+            
+            # Create credentials directory if it doesn't exist
+            credentials_dir = os.path.dirname(settings.GOOGLE_CREDENTIALS_PATH)
+            os.makedirs(credentials_dir, exist_ok=True)
+            
+            # Get credentials from environment variable
+            credentials_json = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS_JSON")
+            
+            if credentials_json:
+                # Write credentials to the expected file location
+                try:
+                    with open(settings.GOOGLE_CREDENTIALS_PATH, "w") as f:
+                        f.write(credentials_json)
+                    logger.info(f"Successfully wrote credentials to {settings.GOOGLE_CREDENTIALS_PATH}")
+                except Exception as e:
+                    logger.error(f"Failed to write credentials file: {e}")
+                    return None
+            else:
+                logger.error("GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable not found")
+                return None
+                
+        # Check if credentials file exists regardless of environment
         if not os.path.exists(settings.GOOGLE_CREDENTIALS_PATH):
             logger.error(f"Credentials file not found: {settings.GOOGLE_CREDENTIALS_PATH}")
             return None

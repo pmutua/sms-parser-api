@@ -1,0 +1,1 @@
+web: gunicorn core.wsgi:application --workers=4 --worker-class=gevent --log-file - --timeout 60
